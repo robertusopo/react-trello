@@ -1,0 +1,48 @@
+import React, { Component } from 'react';
+import service from '../services/TrelloService'
+
+
+
+class ColumnForm extends Component {
+
+  state={
+    title:""
+  }
+
+  handleChange = (event) => {
+    this.setState({title: event.target.value})
+  }
+
+  handleSubmit= (event) => {
+    event.preventDefault();
+    service.createColumn({title: this.state.title, position: this.props.position})
+      .then((response) => this.props.onAddColumn())
+  }
+
+
+
+  render() {
+    return(
+      <form onSubmit={this.handleSubmit}>
+        <div className="col-4">
+        <div class="card" style={{width: "18rem"}}>
+          <div class="card-body">
+            <div className="form-group">
+              <label htmlFor="exampleInputEmail1">Column title</label>
+              <input type="text" className="form-control" placeholder="title" 
+              value={this.state.title} onChange={this.handleChange}/>
+              {/* <small id="emailHelp" className="form-text text-muted">validations</small> */}
+            </div>
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+
+
+
+</form >
+    )
+  }
+}
+
+export default  ColumnForm;
