@@ -14,7 +14,7 @@ class Board extends Component {
   getColumns = () => {
     service.getColumns()
       .then(
-        response => this.setState({ columns: response.data.columns}), 
+        response => this.setState({ columns: response.data}), 
         err => this.setState({error: err})
       )
   }
@@ -23,14 +23,7 @@ class Board extends Component {
     this.getColumns()
   }
 
-  // onSubmitForm = (title) => {
-  //   const pos = this.state.columns.length + 1;
-  //   const col = {title: title, position: pos};
-  //   service.
-  //   this.setState({columns: [...this.state.columns, col]})
-  // }
-
-  columnList = () =>  this.state.columns.map(column => <Column key={column.position} {...column} />)
+  columnList = () => this.state.columns.map(column => <Column key={column.position} {...column} />)
 
   render = () => 
   <div className="container-fluid">

@@ -1,24 +1,49 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Card from './Card';
-import { Link } from 'react-router-dom';
+import service from '../services/TrelloService'
+import { Link,Redirect } from 'react-router-dom';
 
-const Column  = (props) => {
-  
-  const cardList = props.cards.map(card => <Card key={card.position} {...card} />)
+class Column  extends Component {
 
-  return(
-    <div className="col-3">
-    <div class="card">
-      <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted">{props.title}</h6>
-        <div>
-          {cardList}
-          <Link to={'/new-card'} params={{id: props.id, pos: props.cards.length + 1}}> New Card </Link>
-        </div>
-      </div>
-  </div>
-  </div>
-  )
+  state= {
+    toBoard: false
   }
+  
+  cardList = this.props.cards.map(card => <Card key={card.position} {...card} />)
+
+  onDelete = () => {
+    service.deleteColumn(this.props.id)
+    .then(response => this.setState({toBoard: true}))
+  }
+
+  render() {
+
+    if (this.state.toBoard) {
+      return <Redirect to="/board"/>
+    }
+
+    return(
+      <div className="col-3">
+      <div className="card">
+      <button type="button" className="btn btn-outline-danger m-3" onClick={this.onDelete} aria-label="Close">
+            Close
+          </button>
+        <div className="card-body">
+
+          <h5 className="card-subtitle mb-2">{this.props.title}</h5>
+          <div>
+            {this.cardList}
+            <Link to={{
+              pathname: '/new-card',
+              id: this.props.id,
+              pos: this.props.cards.length + 1
+              }}>New Card </Link>
+          </div>
+        </div>
+    </div>
+    </div>
+    )
+  }
+}
 
 export default Column;

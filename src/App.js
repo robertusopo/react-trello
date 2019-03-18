@@ -10,8 +10,9 @@ class App extends Component {
       <div className="App">
         <Header />
         <Switch>
-          <Route exact path="/" component={ Board}/>
-          <Route exact path="/new-card" component={ CardForm}/>
+          <Route exact path="/" component={ Board }/>
+          <Route exact path="/new-card" component={ CardForm }/>
+          <Redirect to="/"/>
         </Switch>
       </div>
     );
