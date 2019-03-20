@@ -24,7 +24,7 @@ class Card extends Component {
             <span aria-hidden="true">&times;</span>
           </button>
           <p><span className="badge badge-primary">{this.props.label}</span></p>
-          {this.props.imageUrl && (<img className="img-fluid rounded mx-auto" src={this.props.imageUrl}alt={this.props.title}/>)}
+          {this.props.imageUrl && (<img className="img-fluid rounded mx-auto" src={this.props.imageUrl} alt={this.props.title}/>)}
       
           <h5 className="card-title">{this.props.title}</h5>
           <p className="card-text">{this.props.description}</p>

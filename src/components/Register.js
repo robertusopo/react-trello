@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 // import { AuthContext } from '../contexts/AuthStore';
 
@@ -7,8 +7,6 @@ const validators = {
   email: (value) => {
     if(!value) {
       return 'Email is required'
-    } else if (value.length < 3 ){
-      return 'At least 3 characters'
     } else {
       return false
     }
@@ -17,13 +15,11 @@ const validators = {
     let error;
     if(!value || value === "") {
       error = "password is required"
-    } else if (!value.length >= 8) {
-      error = "Password must cotains at least 8 characters"
     } else {return error}
   }
 }
 
-class Login extends Component {
+class Register extends Component {
   state = {
     user: {
       email:"",
@@ -31,7 +27,7 @@ class Login extends Component {
     },
     errors: {},
     touch: {},
-    isAuthenticated: false
+    toLogin: false
   }
 
   handleChange = (event) => {
@@ -52,13 +48,11 @@ class Login extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    console.log("entra")
-    AuthService.authenticate(this.state.user)
+    AuthService.register(this.state.user)
       .then(
-        (response) => {
-          this.setState({
-          isAuthenticated: true
-        })}, (error) => console.error(error)
+        (user) => this.setState({
+          toLogin: true
+        }), (error) => console.error(error)
       )
   }
 
@@ -68,30 +62,31 @@ class Login extends Component {
 
   render() {
 
-    if(this.state.isAuthenticated) {
-      return(<Redirect to="/board"/>)
+    if(this.state.toLogin) {
+      return(<Redirect to="/authenticate"/>)
     }
     
     return(
+      
       <div className="container text-center col-4">
         <form className="form-signin" onSubmit={this.handleSubmit}>
-          <h1 className="h3 mb-3 font-weight-normal">Please login</h1>
+          <h1 className="h3 mb-3 font-weight-normal">Please register</h1>
           <div className="mb-2">
-            <label htmlFor="inputEmail" className="sr-only">Email address</label>
+            <label className="sr-only">Email address</label>
             <input type="text" name="email" className="form-control" placeholder="Email address" onChange={this.handleChange} onBlur={this.handleBlur} autoFocus/>
           </div>
           <div className="mb-3">
-            <label htmlFor="inputPassword" className="sr-only">Password</label>
+            <label className="sr-only">Password</label>
             <input type="password" name="password" onChange={this.handleChange} onBlur={this.handleBlur} className="form-control" placeholder="Password"/>
           </div>
-          <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+          <button className="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
         </form>
       </div>
     )
   }
 }
 
-export default Login;
+export default Register;
 
 // export default () => {
 //   return (
